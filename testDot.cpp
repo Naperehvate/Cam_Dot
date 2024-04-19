@@ -9,13 +9,20 @@ using std::hex;
 struct Camera
 {
 	const wchar_t module_name[11] = L"client.dll";
-	unsigned int main_offsets = 0x046471D0;
-	vector <unsigned int> offsets = { 0x648 };
+	unsigned int main_offsets = 0x04790160;
+	vector <unsigned int> offsets = { 0x60, 0x5C0 };
+};
+
+struct Fog
+{
+	const wchar_t module_name[11] = L"tier0.dll";
+	unsigned int main_offsets = 0x00371140;
+	vector <unsigned int> offsets = { 0x4F0, 0x40 };
 };
 
 struct FogMap
 {
-
+	
 };
 
 uintptr_t GetModuleBaseAddress(DWORD procID, const wchar_t* modName)
@@ -60,6 +67,7 @@ int main()
 	GetWindowThreadProcessId(hwnd, &procID);
 
 	Camera camera;
+	Fog fog;
 
 	cout << procID << endl;
 	if (procID == NULL)
@@ -92,13 +100,14 @@ int main()
 		WriteProcessMemory(hProcess, (BYTE*)cam_address, &new_value, sizeof(float), nullptr);
 	}
 
-	/*uintptr_t client_dll_fog = module_base + 0x0462BDD0;
-	vector <unsigned int> offsets_fog = { 0x40 };
+	module_base = GetModuleBaseAddress(procID, fog.module_name);
 
-	uintptr_t fog_address = FindAddrOffsets(hProcess, client_dll_fog, offsets_fog);
+	uintptr_t client_dll_fog = module_base + fog.main_offsets;
+
+	uintptr_t fog_address = FindAddrOffsets(hProcess, client_dll_fog, fog.offsets);
 
 	int value = 0;
-	WriteProcessMemory(hProcess, (BYTE*)fog_address, &value, sizeof(value), nullptr);*/
+	WriteProcessMemory(hProcess, (BYTE*)fog_address, &value, sizeof(value), nullptr);
 
 
 	return 0;
