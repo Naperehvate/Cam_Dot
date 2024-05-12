@@ -8,9 +8,9 @@ using std::hex;
 
 struct Camera
 {
-	const wchar_t module_name[11] = L"client.dll";
-	unsigned int main_offsets = 0x04790160;
-	vector <unsigned int> offsets = { 0x60, 0x5C0 };
+	const wchar_t module_name[19] = L"resourcesystem.dll";
+	unsigned int main_offsets = 0x00062CC0;
+	vector <unsigned int> offsets = { 0x180, 0x10, 0x40, 0xA8, 0x70, 0x678 };
 };
 
 struct Fog
