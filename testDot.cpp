@@ -9,8 +9,8 @@ using std::hex;
 struct Camera
 {
 	const wchar_t module_name[19] = L"resourcesystem.dll";
-	unsigned int main_offsets = 0x00062CC0;
-	vector <unsigned int> offsets = { 0x180, 0x10, 0x40, 0xA8, 0x70, 0x678 };
+	unsigned int main_offsets = 0x00064CC0;
+	vector <unsigned int> offsets = { 0x180, 0x50, 0x40, 0xB8, 0x270, 0x678 };
 };
 
 struct Fog
@@ -86,6 +86,7 @@ int main()
 		return -1;
 	}
 
+	//camera values
 	uintptr_t client_dll_cam = module_base + camera.main_offsets;
 
 	uintptr_t cam_address = FindAddrOffsets(hProcess, client_dll_cam, camera.offsets);
@@ -100,14 +101,15 @@ int main()
 		WriteProcessMemory(hProcess, (BYTE*)cam_address, &new_value, sizeof(float), nullptr);
 	}
 
-	module_base = GetModuleBaseAddress(procID, fog.module_name);
+	//fog values
+	/*module_base = GetModuleBaseAddress(procID, fog.module_name);
 
 	uintptr_t client_dll_fog = module_base + fog.main_offsets;
 
 	uintptr_t fog_address = FindAddrOffsets(hProcess, client_dll_fog, fog.offsets);
 
 	int value = 0;
-	WriteProcessMemory(hProcess, (BYTE*)fog_address, &value, sizeof(value), nullptr);
+	WriteProcessMemory(hProcess, (BYTE*)fog_address, &value, sizeof(value), nullptr);*/
 
 
 	return 0;
