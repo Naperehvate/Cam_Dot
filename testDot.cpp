@@ -10,7 +10,7 @@ struct Camera
 {
 	const wchar_t module_name[19] = L"resourcesystem.dll";
 	unsigned int main_offsets = 0x00064CC0;
-	vector <unsigned int> offsets = { 0x180, 0x50, 0x40, 0xB8, 0x270, 0x678 };
+	vector <unsigned int> offsets = { 0x180, 0x10, 0x20, 0x148, 0x70, 0x678 };
 };
 
 struct Fog
