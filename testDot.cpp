@@ -11,18 +11,17 @@ struct Camera
 	const wchar_t module_name[19] = L"resourcesystem.dll";
 	unsigned int main_offsets = 0x00064CC0;
 	vector <unsigned int> offsets = { 0x180, 0x10, 0x20, 0x148, 0x70, 0x678 };
-};
+}camera;
 
 struct Fog
 {
 	const wchar_t module_name[11] = L"tier0.dll";
-	unsigned int main_offsets = 0x00371140;
-	vector <unsigned int> offsets = { 0x4F0, 0x40 };
-};
+	unsigned int main_offsets = 0x0037C590;
+	vector <unsigned int> offsets = { 0x2E0, 0x8, 0x10, 0x10, 0x10, 0x10,0x908 };
+}fog;
 
-struct FogMap
+struct R_Farz
 {
-	
 };
 
 uintptr_t GetModuleBaseAddress(DWORD procID, const wchar_t* modName)
@@ -66,9 +65,6 @@ int main()
 	HWND hwnd = FindWindowA(nullptr, "Dota 2");
 	GetWindowThreadProcessId(hwnd, &procID);
 
-	Camera camera;
-	Fog fog;
-
 	cout << procID << endl;
 	if (procID == NULL)
 	{
@@ -83,7 +79,7 @@ int main()
 	if (hProcess == nullptr)
 	{
 		std::cout << "ERROR(-2): Failed open process" << std::endl;
-		return -1;
+		return -2;
 	}
 
 	//camera values
@@ -92,7 +88,7 @@ int main()
 	uintptr_t cam_address = FindAddrOffsets(hProcess, client_dll_cam, camera.offsets);
 
 	float old_value = 0.0f;
-	float new_value = 1500.0f;
+	float new_value = 1600.0f;
 
 	ReadProcessMemory(hProcess, (BYTE*)cam_address, &old_value, sizeof(float), nullptr);
 	cout << old_value << endl;
@@ -102,15 +98,15 @@ int main()
 	}
 
 	//fog values
-	/*module_base = GetModuleBaseAddress(procID, fog.module_name);
+	module_base = GetModuleBaseAddress(procID, fog.module_name);
 
 	uintptr_t client_dll_fog = module_base + fog.main_offsets;
 
 	uintptr_t fog_address = FindAddrOffsets(hProcess, client_dll_fog, fog.offsets);
 
 	int value = 0;
-	WriteProcessMemory(hProcess, (BYTE*)fog_address, &value, sizeof(value), nullptr);*/
+	WriteProcessMemory(hProcess, (BYTE*)fog_address, &value, sizeof(value), nullptr);
 
-
+	CloseHandle(hProcess);
 	return 0;
 }
