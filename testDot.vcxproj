@@ -133,6 +133,10 @@
   <ItemGroup>
     <ClCompile Include="testDot.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="memory.h" />
+    <ClInclude Include="offsets.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
