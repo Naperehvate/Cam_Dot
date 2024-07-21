@@ -52,7 +52,7 @@ uintptr_t FindSignature(HANDLE hProcess, uintptr_t baseAddress, SIZE_T moduleSiz
         return 0;
     }
 
-    for (SIZE_T i = 0; i < bytesRead - sigSize; ++i)
+    for (SIZE_T i = 0; i <= bytesRead - sigSize; ++i)
     {
         bool found = true;
         for (SIZE_T j = 0; j < sigSize; ++j)

@@ -31,28 +31,56 @@ int main()
     }
 
     //dotPlus values
-    uintptr_t module_base = GetModuleBaseAddress(procID, dotPlus.module_name,dotPlus.sigSize);
+    uintptr_t module_base = GetModuleBaseAddress(procID, dotPlus.module_name, dotPlus.sigSize);
     while (!module_base)
     {
         Sleep(1000); cout << "Waiting for Module to load..." << endl;
         module_base = GetModuleBaseAddress(procID, dotPlus.module_name, dotPlus.sigSize);
     }
-    uintptr_t dotPlus_addres = FindSignature(hProcess, module_base, dotPlus.sigSize, dotPlus.oldSig, dotPlus.mask, sizeof(dotPlus.oldSig));
-    if (dotPlus_addres)
+
+    uintptr_t dotPlus_address = FindSignature(hProcess, module_base, dotPlus.sigSize, dotPlus.oldSig, dotPlus.mask, sizeof(dotPlus.oldSig));
+    if (dotPlus_address)
     {
-        if (WriteProcessMemory(hProcess, (LPVOID)dotPlus_addres, &dotPlus.newSig, sizeof(dotPlus.newSig), nullptr))
+        BYTE patch[41];
+        SIZE_T bytesRead;
+
+        if (ReadProcessMemory(hProcess, (LPVOID)dotPlus_address, patch, sizeof(dotPlus.oldSig), &bytesRead))
         {
-            cout << "Signature DotPlus replaced successfully at address: 0x" << hex << module_base << endl;
+            // Замена байтов
+            for (int i = 0; i < sizeof(dotPlus.oldSig); ++i)
+            {
+                patch[1] = 0x01;
+                patch[2] = 0x00;
+				patch[3] = 0x00;
+                patch[4] = 0x00;
+
+                patch[13] = 0x01;
+				patch[14] = 0x00;
+				patch[15] = 0x00;
+				patch[16] = 0x00;
+
+                patch[40] = 0x01;
+            }
+
+            if (WriteProcessMemory(hProcess, (LPVOID)dotPlus_address, patch, sizeof(patch), nullptr))
+            {
+                cout << "Signature DotPlus replaced successfully at address: 0x" << hex << dotPlus_address << endl;
+            }
+            else
+            {
+                cout << "ERROR(-5): Failed to write new signature DotPlus" << endl;
+            }
         }
         else
         {
-            cout << "ERROR(-5): Failed to write new signature DotPlus" << endl;
+            cout << "ERROR(-6): Failed to read memory for patching" << endl;
         }
     }
     else
     {
         cout << "Signature DotPlus not found." << endl;
     }
+
 
     
 
