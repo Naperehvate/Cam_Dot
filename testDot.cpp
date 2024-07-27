@@ -18,6 +18,7 @@ int main()
         return -1;
     }
 
+    bool flag;
     Camera camera;
     Fog fog;
     R_Farz r_farz;
@@ -65,6 +66,7 @@ int main()
             if (WriteProcessMemory(hProcess, (LPVOID)dotPlus_address, patch, sizeof(patch), nullptr))
             {
                 cout << "Signature DotPlus replaced successfully at address: 0x" << hex << dotPlus_address << endl;
+                flag = true;
             }
             else
             {
@@ -96,22 +98,24 @@ int main()
         WriteProcessMemory(hProcess, (BYTE*)cam_address, &camera.new_value, sizeof(float), nullptr);
     }
 
-    //fog values
-    module_base = GetModuleBaseAddress(procID, fog.module_name, fog.sigSize);
-    uintptr_t module_dll_fog = module_base + fog.main_offsets;
-    uintptr_t fog_address = FindAddrOffsets(hProcess, module_dll_fog, fog.offsets);
+    if (flag)
+    {
+        //fog values
+        module_base = GetModuleBaseAddress(procID, fog.module_name, fog.sigSize);
+        uintptr_t module_dll_fog = module_base + fog.main_offsets;
+        uintptr_t fog_address = FindAddrOffsets(hProcess, module_dll_fog, fog.offsets);
 
-    /*WriteProcessMemory(hProcess, (BYTE*)fog_address, &fog.value, sizeof(int), nullptr);*/
-
-
-    /*r_farz values*/
-    module_base = GetModuleBaseAddress(procID, r_farz.module_name, r_farz.sigSize);
-    uintptr_t module_dll_r_farz = module_base + r_farz.main_offsets;
-    uintptr_t r_farz_address = FindAddrOffsets(hProcess, module_dll_r_farz, r_farz.offsets);
-
-    /*WriteProcessMemory(hProcess, (BYTE*)r_farz_address, &r_farz.value, sizeof(float), nullptr);*/
+        WriteProcessMemory(hProcess, (BYTE*)fog_address, &fog.value, sizeof(int), nullptr);
 
 
+        /*r_farz values*/
+        module_base = GetModuleBaseAddress(procID, r_farz.module_name, r_farz.sigSize);
+        uintptr_t module_dll_r_farz = module_base + r_farz.main_offsets;
+        uintptr_t r_farz_address = FindAddrOffsets(hProcess, module_dll_r_farz, r_farz.offsets);
+
+        WriteProcessMemory(hProcess, (BYTE*)r_farz_address, &r_farz.value, sizeof(float), nullptr);
+    }
+    
 
     CloseHandle(hProcess);
     return 0;
