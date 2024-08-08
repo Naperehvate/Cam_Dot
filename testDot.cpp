@@ -66,7 +66,7 @@ int main()
             if (WriteProcessMemory(hProcess, (LPVOID)dotPlus_address, patch, sizeof(patch), nullptr))
             {
                 cout << "Signature DotPlus replaced successfully at address: 0x" << hex << dotPlus_address << endl;
-                flag = true;
+                flag = false;
             }
             else
             {
