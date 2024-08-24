@@ -7,10 +7,10 @@
 
 struct Camera
 {
-    const wchar_t module_name[19] = L"resourcesystem.dll";
+    const wchar_t module_name[12] = L"server.dll";
     SIZE_T sigSize = 0;
-    unsigned int main_offsets = 0x00064D80;
-    std::vector<unsigned int> offsets = { 0x190, 0x10, 0x0, 0xA8, 0x70, 0x678 };
+    unsigned int main_offsets = 0x03E23D10;
+    std::vector<unsigned int> offsets = { 0x2F8, 0x1F0, 0x100, 0xCC8};
 
     float old_value = 0.0f;
     float new_value = 1500.0f;
@@ -18,10 +18,10 @@ struct Camera
 
 struct Fog
 {
-    const wchar_t module_name[11] = L"tier0.dll";
+    const wchar_t module_name[19] = L"client.dll";
     SIZE_T sigSize = 0;
-    unsigned int main_offsets = 0x00383590;
-    std::vector<unsigned int> offsets = { 0x310, 0x8, 0x10, 0x10, 0xB38 };
+    unsigned int main_offsets = 0x04C29B70;
+    std::vector<unsigned int> offsets = { 0x400 };
 
     int value = 0;
 };
