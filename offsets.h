@@ -7,10 +7,10 @@
 
 struct Camera
 {
-    const wchar_t module_name[19] = L"resourcesystem.dll";
+    const wchar_t module_name[13] = L"localize.dll";
     SIZE_T sigSize = 0;
-    unsigned int main_offsets = 0x00064DB0;
-    std::vector<unsigned int> offsets = { 0x148,0xD0 ,0x60 ,0x288 ,0x70 ,0xD28 };
+    unsigned int main_offsets = 0x00039DB0;
+    std::vector<unsigned int> offsets = { 0x2D0,0x340 ,0x10, 0x40 ,0xA8 ,0x400 ,0xD28 };
 
     float old_value = 0.0f;
     float new_value = 1600.0f;
